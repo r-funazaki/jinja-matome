@@ -1,16 +1,43 @@
-const express = require('express');
-const path = require('path');
+# 参拝.jp モックサイト
 
-const app = express();
-// Renderは環境変数PORTを自動で割り当てるので、これに従う必要があります
-const PORT = process.env.PORT || 3000;
+神社仏閣まとめサイト「参拝.jp」のNode.js + Expressモックです。
 
-app.use(express.static(path.join(__dirname, 'public')));
+## ローカルでの起動
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+```bash
+npm install
+npm start
+```
 
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
-});
+ブラウザで http://localhost:3000 を開く。
+
+## Renderへのデプロイ手順
+
+1. このプロジェクトをGitHubリポジトリにプッシュ
+2. [Render](https://render.com) にログイン
+3. **New +** → **Web Service** をクリック
+4. GitHubリポジトリを接続して選択
+5. 以下の設定を入力:
+   - **Runtime**: Node
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+   - **Instance Type**: Free
+6. **Deploy Web Service** をクリック
+7. 数分後、`https://<service-name>.onrender.com` のURLが発行されます
+
+## ファイル構成
+
+```
+jinja-mock/
+├── public/
+│   └── index.html    # サイト本体のHTML
+├── server.js         # Expressサーバー
+├── package.json
+├── .gitignore
+└── README.md
+```
+
+## 注意
+
+- Render無料プランは15分アクセスがないとスリープし、復帰に30秒〜1分かかります
+- `process.env.PORT` を使用しているため、Renderのポート自動割り当てに対応済み
